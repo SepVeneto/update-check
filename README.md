@@ -1,36 +1,20 @@
-# unplugin-starter
+# @sepveneto/update-check
 
-[![NPM version](https://img.shields.io/npm/v/unplugin-starter?color=a1b858&label=)](https://www.npmjs.com/package/unplugin-starter)
+定时查询版本更新
 
-Starter template for [unplugin](https://github.com/unjs/unplugin).
+## 使用
 
-## Template Usage
-
-To use this template, clone it down using:
-
-```bash
-npx degit unplugin/unplugin-starter my-unplugin
+```cmd
+pnpm i @sepveneto/update-check
 ```
 
-And do a global replacement of `unplugin-starter` with your plugin name.
-
-Then you can start developing your unplugin 🔥
-
-To test your plugin, run: `pnpm run dev`
-To release a new version, run: `pnpm run release`
-
-## Install
-
-```bash
-npm i unplugin-starter
-```
 
 <details>
 <summary>Vite</summary><br>
 
 ```ts
 // vite.config.ts
-import Starter from 'unplugin-starter/vite'
+import Starter from '@sepveneto/update-check/vite'
 
 export default defineConfig({
   plugins: [
@@ -44,23 +28,6 @@ Example: [`playground/`](./playground/)
 <br></details>
 
 <details>
-<summary>Rollup</summary><br>
-
-```ts
-// rollup.config.js
-import Starter from 'unplugin-starter/rollup'
-
-export default {
-  plugins: [
-    Starter({ /* options */ }),
-  ],
-}
-```
-
-<br></details>
-
-
-<details>
 <summary>Webpack</summary><br>
 
 ```ts
@@ -68,26 +35,10 @@ export default {
 module.exports = {
   /* ... */
   plugins: [
-    require('unplugin-starter/webpack')({ /* options */ })
+    require('@sepveneto/update-check/webpack')({ /* options */ })
   ]
 }
 ```
-
-<br></details>
-
-<details>
-<summary>Nuxt</summary><br>
-
-```ts
-// nuxt.config.js
-export default defineNuxtConfig({
-  modules: [
-    ['unplugin-starter/nuxt', { /* options */ }],
-  ],
-})
-```
-
-> This module works for both Nuxt 2 and [Nuxt Vite](https://github.com/nuxt/vite)
 
 <br></details>
 
@@ -99,7 +50,7 @@ export default defineNuxtConfig({
 module.exports = {
   configureWebpack: {
     plugins: [
-      require('unplugin-starter/webpack')({ /* options */ }),
+      require('@sepveneto/update-check/webpack')({ /* options */ }),
     ],
   },
 }
@@ -113,7 +64,7 @@ module.exports = {
 ```ts
 // esbuild.config.js
 import { build } from 'esbuild'
-import Starter from 'unplugin-starter/esbuild'
+import Starter from '@sepveneto/update-check/esbuild'
 
 build({
   plugins: [Starter()],
@@ -121,3 +72,32 @@ build({
 ```
 
 <br></details>
+
+```js
+// main.ts/main.js
+import { onUpdate } from '@sepveneto/update-check'
+onUpdate(() => {
+  /**
+   * 询问用户是否需要刷新页面
+   */
+})
+```
+
+## 选项
+
+| 名称 | 类型 | 默认值 | 说明 |
+| :--- | :--- | :---- | :--- |
+| timer | number | 60 * 1000 | 检查的间隔，单位毫秒 |
+| base | string | '' | 版本文件的访问位置 |
+
+关于`base`:
+一般保持与vite中的`base`或是webpack/vue-cli中的`publicPath`一致即可，但是当其配置为`./`或`auto`需要设置为具体的地址
+
+## 原理
+
+1. 项目构建时在公共目录生成版本文件
+2. 依赖worker创建定时器，向服务器请求版本并比较，当版本变动时通知主线程
+
+### 注意
+1. 仅通知一次
+2. 一旦版本文件请求失败，会立即销毁线程

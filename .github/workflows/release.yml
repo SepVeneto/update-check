@@ -1,9 +1,10 @@
 name: Release
 
 on:
-  push:
-    tags:
-      - 'v*'
+  workflow_dispatch:
+  workflow_run:
+    workflows: ['Publish to NPM']
+    types: [completed]
 
 jobs:
   release:
