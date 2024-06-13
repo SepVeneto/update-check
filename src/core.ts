@@ -12,3 +12,11 @@ export function onUpdate(this: any, fn: () => void) {
     evt.data === EVENT_UPDATE && fn.apply(this)
   }
 }
+
+export function check() {
+  if (!window.__UPDATE_WORKER__) {
+    console.warn('[@sepveneto/update-check] cannot find worker.')
+    return
+  }
+  window.__UPDATE_WORKER__.postMessage({ type: 'check' })
+}

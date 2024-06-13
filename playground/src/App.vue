@@ -1,8 +1,13 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+import { check } from '@sepveneto/update-check'
+
+function handleCheck() {
+  check()
+}
 </script>
 
 <template>
+  <button @click="handleCheck">click me</button>
   <RouterLink to="/">Home</RouterLink>
   <RouterLink to="/about">about</RouterLink>
   <RouterView />

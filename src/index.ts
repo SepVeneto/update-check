@@ -7,6 +7,16 @@ import type { Options } from './types'
 import { EVENT_UPDATE } from './constant'
 
 const str = `
+self.onmessage = (evt) => {
+  switch (evt.data.type) {
+    case 'check':
+      checkUpdate()
+      break
+    default:
+      console.warn('[@sepveneto/update-check] unknown action.')
+  }
+}
+
 let timer = null
 checkUpdate()
 if (!ONCE) {
