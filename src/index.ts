@@ -7,10 +7,20 @@ import type { Options } from './types'
 import { EVENT_UPDATE } from './constant'
 
 const str = `
-let timer = setInterval(async () => {
+let timer = null
+checkUpdate()
+if (!ONCE) {
+  timer = setInterval(checkUpdate, TIMER)
+}
+
+async function checkUpdate() {
   try {
-    const res = await fetch(location.origin + BASE + "/version.txt?t=" + Date.now())
-    if (res.status !== 200) {
+    let checkFile = location.origin + BASE + "/version.txt"
+    if (CACHE === 'storage') {
+      checkFile += "?t=" + Date.now()
+    }
+    const res = await fetch(checkFile)
+    if (![200, 304].includes(res.status)) {
       self.postMessage('terminate')
       return 
     }
@@ -23,12 +33,14 @@ let timer = setInterval(async () => {
     clearInterval(timer)
     timer = null
   }
-}, TIMER)
+}
 `
 
 const defaultOptions = {
   base: '',
   timer: 60 * 1000,
+  cache: 'storage',
+  once: false,
 }
 
 export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) => {
@@ -45,6 +57,8 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
     },
     transform(code) {
       const res = str
+        .replace('ONCE', String(_options.once))
+        .replace('CACHE', `"${_options.cache}"`)
         .replace('BASE', `"${_options.base}"`)
         .replace('TIMER', String(_options.timer))
         .replace('VERSION', `"${timestamp}"`)

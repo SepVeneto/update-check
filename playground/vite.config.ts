@@ -6,5 +6,7 @@ import Unplugin from '../src/vite'
 export default defineConfig({
   plugins: [vue(), Unplugin({
     timer: 10 * 1000,
+    cache: 'no-cache',
+    once: false,
   })],
 })

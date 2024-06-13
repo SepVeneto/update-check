@@ -89,6 +89,8 @@ onUpdate(() => {
 | :--- | :--- | :---- | :--- |
 | timer | number | 60 * 1000 | 检查的间隔，单位毫秒 |
 | base | string | '' | 版本文件的访问位置 |
+| cache | no-cache, storage | storage | 文件的缓存策略，默认是强缓存stroag，如果设置为no-cache，则不会携带时间戳 |
+| once | boolean | false | 是否只在应用打开时检查版本号 |
 
 关于`base`:
 一般保持与vite中的`base`或是webpack/vue-cli中的`publicPath`一致即可，但是当其配置为`./`或`auto`需要设置为具体的地址
