@@ -18,7 +18,9 @@ self.onmessage = (evt) => {
 }
 
 let timer = null
-checkUpdate()
+if (ONCE || IMMEDIATE) {
+  checkUpdate()
+}
 if (!ONCE) {
   timer = setInterval(checkUpdate, TIMER)
 }
@@ -51,6 +53,7 @@ const defaultOptions = {
   timer: 60 * 1000,
   cache: 'storage',
   once: false,
+  immediate: false,
 }
 
 export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) => {
@@ -67,6 +70,7 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
     },
     transform(code) {
       const res = str
+        .replace('IMMEDIATE', String(_options.immediate))
         .replace('ONCE', String(_options.once))
         .replace('CACHE', `"${_options.cache}"`)
         .replace('BASE', `"${_options.base}"`)

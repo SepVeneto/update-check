@@ -8,4 +8,6 @@ export interface Options {
   cache?: 'no-cache' | 'storage'
   // 是否只在应用打开时校验
   once?: boolean
+  // 是否在定时器创建时立即执行一次查询
+  immediate?: boolean
 }
