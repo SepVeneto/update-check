@@ -6,7 +6,7 @@ export function onUpdate(this: any, fn: () => void) {
     return
   }
   window.__UPDATE_WORKER__.onmessage = (evt) => {
-    window.__UPDATE_WORKER__?.postMessage('stop')
+    window.__UPDATE_WORKER__?.postMessage({ type: 'stop' })
     window.__UPDATE_WORKER__?.terminate()
     window.__UPDATE_WORKER__ = undefined
     evt.data === EVENT_UPDATE && fn.apply(this)

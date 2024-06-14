@@ -12,6 +12,8 @@ self.onmessage = (evt) => {
     case 'check':
       checkUpdate()
       break
+    case 'stop':
+      break
     default:
       console.warn('[@sepveneto/update-check] unknown action.')
   }
@@ -71,7 +73,7 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
     transform(code) {
       const res = str
         .replace('IMMEDIATE', String(_options.immediate))
-        .replace('ONCE', String(_options.once))
+        .replaceAll('ONCE', String(_options.once))
         .replace('CACHE', `"${_options.cache}"`)
         .replace('BASE', `"${_options.base}"`)
         .replace('TIMER', String(_options.timer))
