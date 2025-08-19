@@ -29,7 +29,8 @@ if (!ONCE) {
 
 async function checkUpdate() {
   try {
-    let checkFile = location.origin + BASE + "/version.txt"
+    const url = BASE.startsWith('http') ? BASE : location.origin + BASE
+    let checkFile = url + "/version.txt"
     if (CACHE === 'storage') {
       checkFile += "?t=" + Date.now()
     }
