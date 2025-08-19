@@ -76,7 +76,7 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
         .replace('IMMEDIATE', String(_options.immediate))
         .replaceAll('ONCE', String(_options.once))
         .replace('CACHE', `"${_options.cache}"`)
-        .replace('BASE', `"${_options.base}"`)
+        .replaceAll('BASE', `"${_options.base}"`)
         .replace('TIMER', String(_options.timer))
         .replace('VERSION', `"${timestamp}"`)
       const base64 = Buffer.from(res).toString('base64')
