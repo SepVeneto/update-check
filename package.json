@@ -1,7 +1,7 @@
 {
   "name": "@sepveneto/update-check",
   "type": "module",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "packageManager": "pnpm@8.6.12",
   "description": "",
   "license": "MIT",
